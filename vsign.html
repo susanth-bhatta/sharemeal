@@ -1,0 +1,92 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="e.css" />
+    <title>Sign in & Sign up Form</title>
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form action="#" class="sign-in-form">
+            <h2 class="title">Sign in</h2>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" id="signin-email"/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" id="signin-password"/>
+            </div>
+            <input type="submit" value="Login" class="btn solid" />
+          </form>
+          
+          <form action="#" class="sign-up-form">
+            <h2 class="title">Sign up</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Username" id="signup-username" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" id="signup-email" />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Password" id="signup-password"/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-lock"></i>
+              <input type="password" placeholder="Confirm Password" id="signup-confirm-password"/>
+            </div>
+            
+            <!-- Role Selection Section -->
+            <div class="role-selection">
+              <h4>Select your role:</h4>
+              <div class="role-options">
+                <button type="button" class="role-btn donor-btn active" data-role="donor">Donor</button>
+                <button type="button" class="role-btn receiver-btn" data-role="receiver">Receiver</button>
+              </div>
+              <input type="hidden" id="user-role" name="user-role" value="donor">
+            </div>
+            
+            <input type="submit" class="btn" value="Sign up" />
+          </form>
+        </div>
+      </div>
+
+      <div class="panels-container">
+        <div class="panel left-panel">
+          <div class="content">
+            <h3>New here ?</h3>
+            <p>
+              Register to join our mission to connect donors with receivers and help reduce food waste.
+            </p>
+            <button class="btn transparent" id="sign-up-btn">
+              Sign up
+            </button>
+          </div>
+          <img src="https://png.pngtree.com/png-vector/20230103/ourmid/pngtree-charity-and-donating-food-concept-png-image_6549098.png" class="sign-up-img">
+        </div>
+        <div class="panel right-panel">
+          <div class="content">
+            <h3>One of us ?</h3>
+            <p>
+              Sign in to manage your donations and help make a positive impact on your community.
+            </p>
+            <button class="btn transparent" id="sign-in-btn">
+              Sign in
+            </button>
+          </div>
+          <img src="https://png.pngtree.com/png-vector/20230103/ourmid/pngtree-charity-and-donating-food-concept-png-image_6549098.png" class="sign-in-img">
+        </div>
+      </div>
+    </div>
+
+    <script src="e.js"></script>
+  </body>
+</html>
