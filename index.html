@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShareMeal - Food Donation Platform</title>
+    <script src="https://kit.fontawesome.com/64d58efce2.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Combined CSS for all views */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #1a73e8;
+            --primary-dark: #0d47a1;
+            --secondary: #34a853;
+            --accent: #f9ab00;
+            --light: #f5f9ff;
+            --dark: #202124;
+            --gray: #5f6368;
+            --light-gray: #e8eaed;
+        }
+
+        body {
+            background-color: #f0f7ff;
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Auth Container Styles */
+        #auth-container {
+            position: relative;
+            width: 100%;
+            min-height: 100vh;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #1a73e8, #0d47a1);
+        }
+
+        .container {
+            position: relative;
+            width: 100%;
+            max-width: 900px;
+            height: 600px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(11, 29, 58, 0.1);
+            overflow: hidden;
+            margin: 40px auto;
+        }
+
+        .forms-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+        }
+
+        .signin-signup {
+            position: absolute;
+            top: 50%;
+            left: 75%;
+            width: 50%;
+            display: grid;
+            grid-template-columns: 1fr;
+            transform: translate(-50%, -50%);
+            transition: 1s 0.7s ease-in-out;
+            z-index: 5;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 2rem 4rem;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(11, 29, 58, 0.1);
+            position: absolute;
+            width: 70%;
+            margin-top: -20%;
+            margin-left: 20%;
+            transition: all 0.5s cubic-bezier(0.77,0,0.175,1);
+        }
+
+        form.sign-up-form {
+            opacity: 0;
+            z-index: 1;
+        }
+
+        form.sign-in-form {
+            z-index: 2;
+        }
+
+        .title {
+            font-size: 2.2rem;
+            color: #444;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            max-width: 380px;
+            width: 100%;
+            background: #f0f0f0;
+            margin: 10px 0;
+            height: 55px;
+            border-radius: 55px;
+            display: grid;
+            grid-template-columns: 15% 85%;
+            padding: 0 0.4rem;
+        }
+
+        .input-field i {
+            text-align: center;
+            line-height: 55px;
+            color: #acacac;
+            font-size: 1.1rem;
+        }
+
+        .input-field input {
+            background: none;
+            outline: none;
+            border: none;
+            line-height: 1;
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .input-field input::placeholder {
+            color: #aaa;
+            font-weight: 500;
+        }
+
+        .btn {
+            width: 150px;
+            background: #5995fd;
+            border: none;
+            height: 49px;
+            border-radius: 49px;
+            cursor: pointer;
+            background-color: var(--primary);
+            color: #fff;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 10px 0;
+            cursor: pointer;
+            transition: 0.5s;
+        }
+
+        .btn:hover {
+            background: #4d84e2;
+        }
+
+        .panels-container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+        .panel {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: space-around;
+            text-align: center;
+            z-index: 6;
+            margin-top: 20%;
+        }
+
+        .left-panel {
+            pointer-events: all;
+            padding: 3rem 17% 2rem 12%;
+        }
+
+        .right-panel {
+            pointer-events: none;
+            padding: 3rem 12% 2rem 17%;
+        }
+
+        .panel .content {
+            color: #fff;
+        }
+
+        .panel h3 {
+            font-weight: 600;
+            font-size: 1.5rem;
+        }
+
+        .panel p {
+            font-size: 0.95rem;
+            padding: 0.7rem 0;
+        }
+
+        .btn.transparent {
+            background: none;
+            border: 2px solid #fff;
+            width: 130px;
+            height: 41px;
+            font-weight: 600;
+            font-size: 0.8rem;
+        }
+
+        .container:before {
+            content: "";
+            position: absolute;
+            height: 2000px;
+            width: 2000px;
+            top: -10%;
+            right: 48%;
+            transform: translateY(-50%);
+            background-image: linear-gradient(-45deg,#0d0d4e 0%, #04b3ed 100%);
+            border-radius: 50%;
+            z-index: 6;
+            transition: 1.8s ease-in-out;
+        }
+
+        .right-panel .image,
+        .right-panel .content {
+            transform: translateX(800px);
+        }
+
+        /* Animation for sign up mode */
+        .container.sign-up-mode:before {
+            transform: translate(100%, -50%);
+            right: 52%;
+        }
+
+        .container.sign-up-mode .left-panel .image,
+        .container.sign-up-mode .left-panel .content {
+            transform: translateX(-800px);
+        }
+
+        .container.sign-up-mode .signin-signup {
+            left: 25%;
+        }
+
+        .container.sign-up-mode form.sign-in-form {
+            opacity: 0;
+            z-index: 1;
+        }
+
+        .container.sign-up-mode form.sign-up-form {
+            opacity: 1;
+            z-index: 2;
+        }
+
+        .container.sign-up-mode .right-panel .image,
+        .container.sign-up-mode .right-panel .content {
+            transform: translateX(0%);
+        }
+
+        .container.sign-up-mode .left-panel {
+            pointer-events: none;
+        }
+
+        .container.sign-up-mode .right-panel {
+            pointer-events: all;
+        }
+
+        .image {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            object-fit: cover;
+            background: #e0f0ff;
+            margin: 40px auto 0 auto;
+            display: block;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+
+        /* Role Selection */
+        .role-selection {
+            margin: 15px 0;
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .role-selection h4 {
+            text-align: left;
+            margin-bottom: 10px;
+            color: #555;
+        }
+
+        .role-options {
+            display: flex;
+            gap: 10px;
+        }
+
+        .role-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 30px;
+            background-color: #e0e0e0;
+            color: #555;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .role-btn.active {
+            background-color: var(--primary);
+            color: white;
+        }
+
+        /* App Container Styles */
+        #app-container {
+            display: none;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* Top Navigation */
+        .top-nav {
+            background: linear-gradient(90deg, var(--primary), var(--primary-dark));
+            color: white;
+            padding: 0 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 100;
+        }
+
+        .top-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo h1 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-right: 20px;
+            letter-spacing: 1px;
+        }
+
+        .logo p {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            font-weight: 300;
+            padding-top: 5px;
+        }
+
+        .search-bar {
+            display: flex;
+            align-items: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 30px;
+            padding: 8px 20px;
+            width: 400px;
+            backdrop-filter: blur(5px);
+        }
+
+        .search-bar input {
+            border: none;
+            padding: 8px 15px;
+            width: 100%;
+            outline: none;
+            font-size: 0.9rem;
+            background: transparent;
+            color: white;
+        }
+
+        .search-bar input::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .search-bar i {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-actions .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        .user-actions .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .user-profile {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            overflow: hidden;
+            border: 2px solid white;
+            cursor: pointer;
+        }
+
+        .user-profile img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Navigation Links */
+        .nav-links {
+            display: flex;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links li {
+            list-style: none;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .nav-links li i {
+            margin-right: 10px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-links li:hover, .nav-links li.active {
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-links li.active::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: white;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 30px;
+            margin-top: 10px;
+        }
+
+        .page-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .page-header h2 {
+            font-size: 1.8rem;
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        .date-filter {
+            display: flex;
+            align-items: center;
+            background: white;
+            border-radius: 30px;
+            padding: 8px 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .date-filter i {
+            color: var(--gray);
+            margin-right: 10px;
+        }
+
+        .date-filter select {
+            border: none;
+            outline: none;
+            background: transparent;
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+
+        /* Stats Section */
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 15px;
+            font-weight: 500;
+        }
+
+        .stat-card .value {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+
+        .stat-card .trend {
+            display: flex;
+            align-items: center;
+            color: var(--secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .stat-card .trend.down {
+            color: #ea4335;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            margin-bottom: 30px;
+        }
+
+        .chart-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-header h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .chart-actions button {
+            background: var(--light);
+            border: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            color: var(--primary);
+            cursor: pointer;
+            margin-left: 10px;
+            transition: all 0.3s;
+        }
+
+        .chart-actions button:hover {
+            background: var(--primary);
+            color: white;
+        }
+
+        .chart-placeholder {
+            height: 300px;
+            background: linear-gradient(120deg, #e0f0ff, #f0f7ff);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--gray);
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        /* Content Layout */
+        .content-layout {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 30px;
+        }
+
+        /* Recent Activity */
+        .activity-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .activity-header h3 {
+            font-size: 1.2rem;
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        .activity-list {
+            list-style: none;
+        }
+
+        .activity-item {
+            display: flex;
+            padding: 15px 0;
+            border-bottom: 1px solid var(--light-gray);
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            font-size: 1rem;
+            margin-bottom: 5px;
+        }
+
+        .activity-details p {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+
+        .activity-time {
+            font-size: 0.85rem;
+            color: var(--gray);
+            align-self: center;
+        }
+
+        /* Right Column */
+        .right-column {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Support Section */
+        .support-container {
+            background: linear-gradient(120deg, var(--primary), var(--primary-dark));
+            border-radius: 15px;
+            padding: 25px;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .support-text h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+        }
+
+        .support-text p {
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .support-button {
+            background: white;
+            color: var(--primary);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 30px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: auto;
+            width: 100%;
+            text-align: center;
+        }
+
+        .support-button:hover {
+            background: var(--light);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Footer */
+        .footer {
+            background: var(--primary-dark);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: 20px;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* Profile Page */
+        .profile-container {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+        }
+        
+        .profile-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            text-align: center;
+        }
+
+        .profile-pic {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            overflow: hidden;
+            margin: 0 auto 20px;
+            border: 5px solid var(--light);
+            position: relative;
+        }
+
+        .profile-pic img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .edit-icon {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: var(--primary);
+            color: white;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .profile-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+
+        .profile-card p {
+            color: var(--gray);
+            margin-bottom: 20px;
+        }
+
+        .role-badge {
+            background: var(--light);
+            color: var(--primary);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: 600;
+            display: inline-block;
+            margin-bottom: 25px;
+        }
+
+        .stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .stat-item {
+            background: var(--light);
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .stat-item .number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .stat-item .label {
+            font-size: 0.9rem;
+            color: var(--gray);
+        }
+        
+        .details-card {
+            background: white;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .card-header {
+            border-bottom: 1px solid var(--light-gray);
+            padding-bottom: 20px;
+            margin-bottom: 25px;
+        }
+
+        .card-header h3 {
+            font-size: 1.4rem;
+            color: var(--dark);
+        }
+
+        .info-group {
+            margin-bottom: 25px;
+        }
+
+        .info-group h4 {
+            color: var(--gray);
+            font-weight: 500;
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+        .info-content {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+        }
+
+        .info-item {
+            margin-bottom: 15px;
+        }
+
+        .info-item .label {
+            font-size: 0.9rem;
+            color: var(--gray);
+            margin-bottom: 5px;
+        }
+
+        .info-item .value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .content-layout, .profile-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .top-header {
+                flex-wrap: wrap;
+                gap: 15px;
+            }
+            
+            .search-bar {
+                width: 100%;
+                order: 3;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+            
+            .nav-links li {
+                padding: 15px 20px;
+                font-size: 0.9rem;
+            }
+            
+            .stats-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .page-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .info-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .container {
+                height: auto;
+                min-height: 600px;
+            }
+            
+            .signin-signup {
+                width: 100%;
+                left: 50%;
+            }
+            
+            .panels-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: 1fr 1fr;
+            }
+            
+            .panel {
+                flex-direction: row;
+                justify-content: space-around;
+                align-items: center;
+                padding: 2.5rem 8%;
+            }
+            
+            .container.sign-up-mode .signin-signup {
+                left: 50%;
+            }
+        }
+
+        /* Logout button */
+        #logout-btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s;
+        }
+
+        #logout-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Auth View Container -->
+    <div id="auth-container">
+        <div class="container">
+            <div class="forms-container">
+                <div class="signin-signup">
+                    <!-- Sign In Form -->
+                    <form action="#" class="sign-in-form">
+                        <h2 class="title">Sign in</h2>
+                        <div class="input-field">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" placeholder="Email" id="signin-email" value="demo@example.com" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" placeholder="Password" id="signin-password" value="password123" />
+                        </div>
+                        <input type="submit" value="Login" class="btn solid" />
+                    </form>
+                    
+                    <!-- Sign Up Form -->
+                    <form action="#" class="sign-up-form">
+                        <h2 class="title">Sign up</h2>
+                        <div class="input-field">
+                            <i class="fas fa-user"></i>
+                            <input type="text" placeholder="Username" id="signup-username" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-envelope"></i>
+                            <input type="email" placeholder="Email" id="signup-email" />
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" placeholder="Password" id="signup-password"/>
+                        </div>
+                        <div class="input-field">
+                            <i class="fas fa-lock"></i>
+                            <input type="password" placeholder="Confirm Password" id="signup-confirm-password"/>
+                        </div>
+                        
+                        <!-- Role Selection Section -->
+                        <div class="role-selection">
+                            <h4>Select your role:</h4>
+                            <div class="role-options">
+                                <button type="button" class="role-btn donor-btn active" data-role="donor">Donor</button>
+                                <button type="button" class="role-btn receiver-btn" data-role="receiver">Receiver</button>
+                            </div>
+                            <input type="hidden" id="user-role" name="user-role" value="donor">
+                        </div>
+                        
+                        <input type="submit" class="btn" value="Sign up" />
+                    </form>
+                </div>
+            </div>
+
+            <div class="panels-container">
+                <div class="panel left-panel">
+                    <div class="content">
+                        <h3>New here ?</h3>
+                        <p>
+                            Register to join our mission to connect donors with receivers and help reduce food waste.
+                        </p>
+                        <button class="btn transparent" id="sign-up-btn">
+                            Sign up
+                        </button>
+                    </div>
+                    <img src="https://png.pngtree.com/png-vector/20230103/ourmid/pngtree-charity-and-donating-food-concept-png-image_6549098.png" class="image">
+                </div>
+                <div class="panel right-panel">
+                    <div class="content">
+                        <h3>One of us ?</h3>
+                        <p>
+                            Sign in to manage your donations and help make a positive impact on your community.
+                        </p>
+                        <button class="btn transparent" id="sign-in-btn">
+                            Sign in
+                        </button>
+                    </div>
+                    <img src="https://png.pngtree.com/png-vector/20230103/ourmid/pngtree-charity-and-donating-food-concept-png-image_6549098.png" class="image">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- App View Container (Initially hidden) -->
+    <div id="app-container">
+        <!-- Top Navigation -->
+        <div class="top-nav">
+            <div class="top-header">
+                <div class="logo">
+                    <h1>ShareMeal</h1>
+                    <p>Eager to help</p>
+                </div>
+                
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search donations, volunteers, locations...">
+                </div>
+                
+                <div class="user-actions">
+                    <button class="btn">
+                        <i class="fas fa-bell"></i>
+                    </button>
+                    <button class="btn">
+                        <i class="fas fa-cog"></i>
+                    </button>
+                    <button id="logout-btn">
+                        <i class="fas fa-sign-out-alt"></i> Logout
+                    </button>
+                    <div class="user-profile">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="User">
+                    </div>
+                </div>
+            </div>
+            
+            <ul class="nav-links">
+                <li class="active" data-target="dashboard">
+                    <i class="fas fa-home"></i>
+                    <span>Home</span>
+                </li>
+                <li data-target="orders">
+                    <i class="fas fa-utensils"></i>
+                    <span>Orders</span>
+                </li>
+                <li data-target="serves">
+                    <i class="fas fa-concierge-bell"></i>
+                    <span>Serves</span>
+                </li>
+                <li data-target="rating">
+                    <i class="fas fa-star"></i>
+                    <span>Rating</span>
+                </li>
+                <li data-target="pickup">
+                    <i class="fas fa-truck"></i>
+                    <span>Pickup</span>
+                </li>
+                <li data-target="donations">
+                    <i class="fas fa-donate"></i>
+                    <span>Donations</span>
+                </li>
+                <li data-target="profile">
+                    <i class="fas fa-user"></i>
+                    <span>Profile</span>
+                </li>
+                <li data-target="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Analytics</span>
+                </li>
+                <li data-target="support">
+                    <i class="fas fa-question-circle"></i>
+                    <span>Support</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content - Dashboard -->
+        <div class="main-content" id="dashboard-content">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2>Dashboard Overview</h2>
+                <div class="date-filter">
+                    <i class="fas fa-calendar-alt"></i>
+                    <select>
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last 90 Days</option>
+                        <option selected>All Time</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Stats Section -->
+            <div class="stats-container">
+                <div class="stat-card">
+                    <h3>Foods Donated</h3>
+                    <div class="value">7.1K</div>
+                    <div class="trend">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12% from last month</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Items Picked</h3>
+                    <div class="value">12K</div>
+                    <div class="trend">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8% from last month</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Total Deliveries</h3>
+                    <div class="value">5.3K</div>
+                    <div class="trend down">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>3% from last month</span>
+                    </div>
+                </div>
+                <div class="stat-card">
+                    <h3>Active Volunteers</h3>
+                    <div class="value">1.2K</div>
+                    <div class="trend">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>15% from last month</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Layout -->
+            <div class="content-layout">
+                <!-- Left Column -->
+                <div>
+                    <!-- Chart Section -->
+                    <div class="chart-container">
+                        <div class="chart-header">
+                            <h3>Food Donation Analytics</h3>
+                            <div class="chart-actions">
+                                <button>Weekly</button>
+                                <button>Monthly</button>
+                                <button>Yearly</button>
+                            </div>
+                        </div>
+                        <div class="chart-placeholder">
+                            <i class="fas fa-chart-line" style="font-size: 3rem; margin-right: 15px;"></i>
+                            Food Donation Metrics Visualization
+                        </div>
+                    </div>
+
+                    <!-- Recent Activity -->
+                    <div class="activity-container">
+                        <div class="activity-header">
+                            <h3>Recent Activity</h3>
+                        </div>
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-archive"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>New Food Donation</h4>
+                                    <p>Fresh produce donated by GreenGrocers Ltd.</p>
+                                </div>
+                                <div class="activity-time">2 hours ago</div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-truck-loading"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>Delivery Completed</h4>
+                                    <p>Food delivered to City Shelter (25 packages)</p>
+                                </div>
+                                <div class="activity-time">5 hours ago</div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>New Volunteer</h4>
+                                    <p>Michael Johnson joined the volunteer team</p>
+                                </div>
+                                <div class="activity-time">Yesterday</div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>New Rating Received</h4>
+                                    <p>Shelter Home gave 5-star rating for delivery</p>
+                                </div>
+                                <div class="activity-time">2 days ago</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="right-column">
+                    <!-- Support Section -->
+                    <div class="support-container">
+                        <div class="support-text">
+                            <h3>Need Help or Support?</h3>
+                            <p>Our team is available 24/7 to assist you with any questions or issues regarding food donations, pickups, or deliveries.</p>
+                        </div>
+                        <button class="support-button">Contact Support</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content - Profile Page (Initially Hidden) -->
+        <div class="main-content" id="profile-content" style="display: none;">
+            <!-- Page Header -->
+            <div class="page-header">
+                <h2>My Profile</h2>
+                <div class="date-filter">
+                    <button class="btn" id="editProfile">
+                        <i class="fas fa-edit"></i> Edit Profile
+                    </button>
+                </div>
+            </div>
+
+            <!-- Profile Container -->
+            <div class="profile-container">
+                <!-- Profile Card -->
+                <div class="profile-card">
+                    <div class="profile-pic">
+                        <img src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80" alt="Profile">
+                        <div class="edit-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                    </div>
+                    <h3>Susanth Bhatta</h3>
+                    <p>Volunteer & Donor</p>
+                    <div class="role-badge">Gold Member</div>
+                    
+                    <div class="stats">
+                        <div class="stat-item">
+                            <div class="number">127</div>
+                            <div class="label">Donations</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number">84</div>
+                            <div class="label">Deliveries</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number">5.2K</div>
+                            <div class="label">Items Donated</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="number">4.9</div>
+                            <div class="label">Avg Rating</div>
+                        </div>
+                    </div>
+                    
+                    <button class="btn" style="width: 100%; background-color: var(--primary); color: white;">
+                        <i class="fas fa-trophy"></i> View Achievements
+                    </button>
+                </div>
+                
+                <!-- Details Card -->
+                <div class="details-card">
+                    <div class="card-header">
+                        <h3>Personal Information</h3>
+                    </div>
+                    
+                    <div class="info-group">
+                        <h4>Account Details</h4>
+                        <div class="info-content">
+                            <div class="info-item">
+                                <div class="label">Full Name</div>
+                                <div class="value">Sush Bhatta</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Email Address</div>
+                                <div class="value">abcdefghi@gamil.com</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Phone Number</div>
+                                <div class="value">(+91) 1234567890</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Member Since</div>
+                                <div class="value">Jan 15, 2022</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Account Status</div>
+                                <div class="value" style="color: var(--secondary);">Active</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">User ID</div>
+                                <div class="value">FD-USER-78945</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <h4>Address Information</h4>
+                        <div class="info-content">
+                            <div class="info-item">
+                                <div class="label">Primary Address</div>
+                                <div class="value">SRKR, Bhimavaram</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">City</div>
+                                <div class="value">Godavari</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">ZIP Code</div>
+                                <div class="value">534204</div>
+                            </div>
+                            <div class="info-item">
+                                <div class="label">Preferred Pickup</div>
+                                <div class="value">Home Address</div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="info-group">
+                        <h4>Recent Activity</h4>
+                        <ul class="activity-list">
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-archive"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>Food Donation Scheduled</h4>
+                                    <p>20kg of canned goods for pickup tomorrow</p>
+                                </div>
+                                <div class="activity-time">Today, 10:30 AM</div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-star"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>Received 5-star Rating</h4>
+                                    <p>From City Shelter for your last donation</p>
+                                </div>
+                                <div class="activity-time">Yesterday, 4:15 PM</div>
+                            </li>
+                            <li class="activity-item">
+                                <div class="activity-icon">
+                                    <i class="fas fa-utensils"></i>
+                                </div>
+                                <div class="activity-details">
+                                    <h4>Donation Delivered</h4>
+                                    <p>15 packages delivered to Homeless Shelter</p>
+                                </div>
+                                <div class="activity-time">Sep 10, 2023</div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>© 2023 FoodDonate. All rights reserved. | Adorens - Eager to Help</p>
+        </div>
+    </div>
+
+    <script>
+        // Auth View Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            // Form Switching
+            const sign_in_btn = document.querySelector("#sign-in-btn");
+            const sign_up_btn = document.querySelector("#sign-up-btn");
+            const container = document.querySelector(".container");
+            
+            sign_up_btn.addEventListener("click", () => {
+                container.classList.add("sign-up-mode");
+            });
+            
+            sign_in_btn.addEventListener("click", () => {
+                container.classList.remove("sign-up-mode");
+            });
+            
+            // Role Selection
+            const roleButtons = document.querySelectorAll('.role-btn');
+            roleButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    // Remove active class from all
+                    roleButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active to clicked
+                    button.classList.add('active');
+                    // Set the hidden input value
+                    document.getElementById('user-role').value = button.dataset.role;
+                });
+            });
+            
+            // Form Submission
+            const signInForm = document.querySelector('.sign-in-form');
+            const signUpForm = document.querySelector('.sign-up-form');
+            
+            signInForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const email = document.getElementById('signin-email').value;
+                const password = document.getElementById('signin-password').value;
+                
+                if (email && password) {
+                    // Simulate login success
+                    document.getElementById('auth-container').style.display = 'none';
+                    document.getElementById('app-container').style.display = 'flex';
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            signUpForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const username = document.getElementById('signup-username').value;
+                const email = document.getElementById('signup-email').value;
+                const password = document.getElementById('signup-password').value;
+                const confirmPassword = document.getElementById('signup-confirm-password').value;
+                const role = document.getElementById('user-role').value;
+                
+                if (username && email && password && confirmPassword) {
+                    if (password !== confirmPassword) {
+                        alert('Passwords do not match');
+                        return;
+                    }
+                    // Simulate signup success
+                    document.getElementById('auth-container').style.display = 'none';
+                    document.getElementById('app-container').style.display = 'flex';
+                    container.classList.remove("sign-up-mode");
+                    // Show profile page after sign up
+                    document.querySelectorAll('.main-content').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    document.getElementById('profile-content').style.display = 'block';
+                } else {
+                    alert('Please fill in all fields');
+                }
+            });
+            
+            // App View Functionality
+            const navLinks = document.querySelectorAll('.nav-links li');
+            navLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    navLinks.forEach(item => item.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    const target = this.getAttribute('data-target');
+                    
+                    // Hide all main-content sections
+                    document.querySelectorAll('.main-content').forEach(section => {
+                        section.style.display = 'none';
+                    });
+                    
+                    // Show the target section
+                    if (target === 'profile') {
+                        document.getElementById('profile-content').style.display = 'block';
+                    } else {
+                        document.getElementById('dashboard-content').style.display = 'block';
+                    }
+                });
+            });
+            
+            // Logout functionality
+            document.getElementById('logout-btn').addEventListener('click', function() {
+                document.getElementById('app-container').style.display = 'none';
+                document.getElementById('auth-container').style.display = 'flex';
+                // Reset forms
+                signInForm.reset();
+                signUpForm.reset();
+                // Reset role to donor
+                roleButtons.forEach(btn => btn.classList.remove('active'));
+                document.querySelector('.role-btn.donor-btn').classList.add('active');
+                document.getElementById('user-role').value = 'donor';
+            });
+            
+            // Support button animation
+            const supportBtn = document.querySelector('.support-button');
+            if(supportBtn) {
+                supportBtn.addEventListener('mouseenter', function() {
+                    this.style.transform = 'translateY(-3px)';
+                });
+                supportBtn.addEventListener('mouseleave', function() {
+                    this.style.transform = 'translateY(0)';
+                });
+            }
+            
+            // Stat card animations
+            const statCards = document.querySelectorAll('.stat-card');
+            statCards.forEach((card, index) => {
+                setTimeout(() => {
+                    card.style.transform = 'translateY(0)';
+                    card.style.opacity = '1';
+                }, index * 150);
+            });
+            
+            // Date filter functionality
+            const dateFilter = document.querySelector('.date-filter select');
+            if(dateFilter) {
+                dateFilter.addEventListener('change', function() {
+                    alert(`Filtering data for: ${this.value}`);
+                });
+            }
+            
+            // Edit profile button
+            const editBtn = document.getElementById('editProfile');
+            if(editBtn) {
+                editBtn.addEventListener('click', function() {
+                    alert('Edit profile functionality would open here');
+                });
+            }
+            
+            // Edit profile picture
+            const editIcon = document.querySelector('.edit-icon');
+            if(editIcon) {
+                editIcon.addEventListener('click', function() {
+                    alert('Profile picture editor would open here');
+                });
+            }
+        });
+    </script>
+</body>
+</html>
